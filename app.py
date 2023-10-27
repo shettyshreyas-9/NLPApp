@@ -2,6 +2,8 @@
 from tkinter import *
 from mydb import DataBase
 from tkinter import messagebox
+import os
+import json
 
 class NLPApp:
     def __init__(self):
@@ -46,7 +48,7 @@ class NLPApp:
         self.password_input.pack(pady=(5,10),ipady=4)
 
         # Button for login
-        login_btn = Button(self.root,text='Login',width=15,height=2)
+        login_btn = Button(self.root,text='Login',width=15,height=2, command=self.perform_login)
         login_btn.pack(pady=(10,10))
 
         # For Registering
@@ -122,5 +124,18 @@ class NLPApp:
         else:
             # print('email exists')
             messagebox.showinfo('Error','Email already exists')
+
+
+    def perform_login(self):
+        email= self.email_input.get()
+        password= self.password_input.get()
+
+        response = self.dbo.search(email,password)
+
+        if response:
+            messagebox.showinfo('success','Login Successful')
+        else:
+            messagebox.showinfo('error','Incorrect email/password')
+
 
 nlp= NLPApp()
