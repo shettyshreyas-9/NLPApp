@@ -1,9 +1,14 @@
 # library for guis
 from tkinter import *
-
+from mydb import DataBase
+from tkinter import messagebox
 
 class NLPApp:
     def __init__(self):
+
+        # create db object
+        self.dbo = DataBase()
+
         # load gui of login
         self.root = Tk()
         self.root.title('NLPApp')
@@ -85,7 +90,7 @@ class NLPApp:
         self.password_input.pack(pady=(5,10),ipady=4)
 
         # Button for Register
-        register_btn = Button(self.root,text='Register',width=15,height=2)
+        register_btn = Button(self.root,text='Register',width=15,height=2,command=self.perform_registration)
         register_btn.pack(pady=(10,10))
 
         # For Registering
@@ -102,6 +107,20 @@ class NLPApp:
         for i in self.root.pack_slaves():
             i.destroy()
 
+    def perform_registration(self):
+        # fetch data from gui
+        name= self.name_input.get()
+        email= self.email_input.get()
+        password= self.password_input.get()
+        print(name)
 
+        response = self.dbo.add_data(name,email,password)
+
+        if response:
+            # print('Registration successful')
+            messagebox.showinfo('Success','Registration success. You can login now')
+        else:
+            # print('email exists')
+            messagebox.showinfo('Error','Email already exists')
 
 nlp= NLPApp()
