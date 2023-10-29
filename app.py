@@ -160,7 +160,7 @@ class NLPApp:
         ner_btn.pack(pady=(10,10))
 
         # Button for Emotion Prediction
-        emotion_btn = Button(self.root,text='Emotion Prediction',width=30,height=4,command=self.perform_registration)
+        emotion_btn = Button(self.root,text='Emotion Prediction',width=30,height=4,command=self.emotion_det_gui)
         emotion_btn.pack(pady=(10,10))
 
         # Button for Logout
@@ -201,6 +201,7 @@ class NLPApp:
         goback_btn.pack(pady=(15,15))
 
 
+# Entity Recognition GUI
 
     def ner_gui(self):
         self.clear()
@@ -234,6 +235,40 @@ class NLPApp:
         goback_btn.pack(pady=(15,15))
 
 
+# Emotion Detection GUI
+    def emotion_det_gui(self):
+        self.clear()
+
+        # For Heading
+        heading1= Label(self.root,text='NLPApp',bg='#34495E',fg='white')
+        heading1.pack(pady=(30,30))
+        heading1.configure(font=('verdana',24,'bold'))
+
+        # For Heading
+        heading2= Label(self.root,text='Emotion Detection',bg='#34495E',fg='white')
+        heading2.pack(pady=(20,20))
+        heading2.configure(font=('verdana',15))
+
+        # For entering text
+        label1 = Label(self.root,text='Enter the text:')
+        label1.pack(pady=(15,15))
+
+        self.emotion_input = Entry(self.root,width=50)
+        self.emotion_input.pack(pady=(5,10),ipady=35)
+
+        emotion_pred_btn = Button(self.root,text='Detect Emotion',width=15,height=2, command=self.do_emotion_detection)
+        emotion_pred_btn.pack(pady=(10,10))
+
+        # result
+        self.emotion_result = Label(self.root,text='',bg='#344952',fg='white')
+        self.emotion_result.pack(pady=(15,15))
+        self.emotion_result.configure(font=('verdana',15))
+
+        goback_btn = Button(self.root,text='Go back',width=10,height=2,command=self.home_gui)
+        goback_btn.pack(pady=(15,15))
+
+
+
 
     def do_sentiment_analysis(self):
         text= self.sentiment_input.get()
@@ -264,6 +299,21 @@ class NLPApp:
 
         print(txt)
         self.ner_result['text'] = txt
+
+
+    def do_emotion_detection(self):
+        text= self.emotion_input.get()
+        print(text)
+        result=self.apio.emotion_detection(text)
+        print(result)
+
+        txt=''
+        for i in result['emotion']:
+            txt= txt + i+ '->' + str(result['emotion'][i]) + '\n'
+
+        print(txt)
+        self.emotion_result['text'] = txt
+
 
 
 

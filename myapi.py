@@ -17,4 +17,9 @@ class API:
         response = paralleldots.ner(text)
         return response
 
+    # Emotion Detection
+    def emotion_detection(self,text):
+        response = paralleldots.emotion(text)
+        return response
+
 
