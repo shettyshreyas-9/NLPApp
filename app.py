@@ -5,11 +5,16 @@ from tkinter import messagebox
 import os
 import json
 
+from myapi import API
+
 class NLPApp:
     def __init__(self):
 
         # create db object
         self.dbo = DataBase()
+
+        # create api object
+        self.apio = API()
 
         # load gui of login
         self.root = Tk()
@@ -183,7 +188,7 @@ class NLPApp:
         self.sentiment_input = Entry(self.root,width=50)
         self.sentiment_input.pack(pady=(5,10),ipady=35)
 
-        sentiment_pred_btn = Button(self.root,text='Analyze Sentiment',width=15,height=2)
+        sentiment_pred_btn = Button(self.root,text='Analyze Sentiment',width=15,height=2, command=self.do_sentiment_analysis)
         sentiment_pred_btn.pack(pady=(10,10))
 
         # result
@@ -195,6 +200,18 @@ class NLPApp:
         goback_btn.pack(pady=(15,15))
 
 
+    def do_sentiment_analysis(self):
+        text= self.sentiment_input.get()
+        # print(text)
+        result=self.apio.sentiment_analysis(text)
+        print(result)
+
+        txt=''
+        for i in result['sentiment']:
+            txt= txt + i+ '->' + str(result['sentiment'][i]) + '\n'
+            # print(i,':',result['sentiment'][i])
+
+        self.sentiment_result['text'] = txt
 
 
 
