@@ -156,7 +156,7 @@ class NLPApp:
         sentiment_btn.pack(pady=(10,10))
 
         # Button for Named Entity Recognition
-        ner_btn = Button(self.root,text='Named Entity Recognition',width=30,height=4,command=self.perform_registration)
+        ner_btn = Button(self.root,text='Named Entity Recognition',width=30,height=4,command=self.ner_gui)
         ner_btn.pack(pady=(10,10))
 
         # Button for Emotion Prediction
@@ -168,6 +168,7 @@ class NLPApp:
         logout_btn.pack(pady=(10,10))
 
 
+    # sentiment GUI section
     def sentiment_gui(self):
         self.clear()
 
@@ -200,6 +201,40 @@ class NLPApp:
         goback_btn.pack(pady=(15,15))
 
 
+
+    def ner_gui(self):
+        self.clear()
+
+        # For Heading
+        heading1= Label(self.root,text='NLPApp',bg='#34495E',fg='white')
+        heading1.pack(pady=(30,30))
+        heading1.configure(font=('verdana',24,'bold'))
+
+        # For Heading
+        heading2= Label(self.root,text='Named Entity Recognition',bg='#34495E',fg='white')
+        heading2.pack(pady=(20,20))
+        heading2.configure(font=('verdana',15))
+
+        # For entering text
+        label1 = Label(self.root,text='Enter the text:')
+        label1.pack(pady=(15,15))
+
+        self.ner_input = Entry(self.root,width=50)
+        self.ner_input.pack(pady=(5,10),ipady=35)
+
+        ner_pred_btn = Button(self.root,text='Recognize Entity',width=15,height=2, command=self.do_ner)
+        ner_pred_btn.pack(pady=(10,10))
+
+        # result
+        self.ner_result = Label(self.root,text='',bg='#344952',fg='white')
+        self.ner_result.pack(pady=(15,15))
+        self.ner_result.configure(font=('verdana',15))
+
+        goback_btn = Button(self.root,text='Go back',width=10,height=2,command=self.home_gui)
+        goback_btn.pack(pady=(15,15))
+
+
+
     def do_sentiment_analysis(self):
         text= self.sentiment_input.get()
         # print(text)
@@ -212,6 +247,23 @@ class NLPApp:
             # print(i,':',result['sentiment'][i])
 
         self.sentiment_result['text'] = txt
+
+
+
+    def do_ner(self):
+        text= self.ner_input.get()
+        # print(text)
+        result=self.apio.named_entity_recognition(text)
+        print(result)
+
+        txt=''
+        for entity in result['entities']:
+            txt= txt+ "name:"+ entity['name']+ '\n'
+            txt= txt+ "category:"+ entity['category']+ '\n'
+            txt= txt+ "confidence_score:"+ str(entity['confidence_score'])+ '\n'+'\n'
+
+        print(txt)
+        self.ner_result['text'] = txt
 
 
 
